@@ -1,0 +1,186 @@
+{% load static %}
+{% load post_tag %}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'blog/css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'blog/css/main.css' %}"/>
+    <link rel="shortcut icon" href="{% static 'blog/images/logo.ico' %}"/>
+    {% if title %}
+        <title>مدونتي | {{ title }}</title>
+    {% else %}
+        <title>مدونتي</title>
+    {% endif %}
+</head>
+<body>
+<header>
+    <!-- Start NavBar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'blog/images/logo.png' %}" alt="الشعار" width="30px">
+            مدونتي
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <!-- الرئيسية -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'home' %}">الرئيسية<span class="sr-only">(current)</span></a>
+                </li>
+                <!-- دوراتي -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        دوراتي
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">دجانكو</a>
+                        <a class="dropdown-item" href="#">فلاتر</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">سي++</a>
+                    </div>
+                </li>
+                <!-- عنا -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">عنّا</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    {% if user.is_authenticated %}
+                        <a class="nav-link" href="{% url 'profile' request.user.username %}">
+                            <img class="img-thumbnail" width="25px" height="25px"
+                                 src="{{ request.user.profile.image.url }}">
+                            <span>{{ request.user.username }}</span>
+                        </a>
+                    {% endif %}
+                </li>
+            </ul>
+            <ul class="navbar-nav mr-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'new_post' %}">تدوينة جديدة</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            الإعدادات
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'profile' request.user.username %}">الملف الشخصي</a>
+                            <a class="dropdown-item" href="#">مدوناتي</a>
+                            <a class="dropdown-item" href="#">تعليقاتي</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'logout' %}">تسجيل الخروج</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">دخول</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">تسجيل</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <!-- End NavBar -->
+</header>
+
+<section>
+    <div class="container">
+        <dv class="row mt-3">
+            <div class="col-md-8">
+                <!-- Tag in django -->
+                {% block content %}
+                {% endblock content %}
+            </div>
+            <div class="col-md-4">
+                <!-- اخر التدوينات -->
+                <div class="card mb-2">
+                    <h3 class="text-center text-light bg-secondary p-2">
+                        آخر التدوينات
+                    </h3>
+                    {% latest_posts %}
+                </div>
+                <!-- اخر التعليقات -->
+                <div class="card mb-2">
+                    <h3 class="text-center text-light bg-secondary p-2">
+                        آخر التعليقات
+                    </h3>
+                    {% latest_commands %}
+                </div>
+            </div>
+        </dv>
+    </div>
+</section>
+
+<footer class="bg-secondary">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md mt-3">
+                <div class="card-group">
+                    <div class="card m-3">
+                        <h4 class="card-title border-bottom m-2 p-2 text-center">
+                            عنّا
+                        </h4>
+                        <div class="card-body">
+                            نحن شركة ناشئة تريد الاتقاء بما لديها لعالم العلم والوعي والتطبيق الابداع!
+                        </div>
+                    </div>
+                    <div class="card m-3">
+                        <h4 class="card-title border-bottom m-2 p-2 text-center">
+                            مصادر الاسبوع
+                        </h4>
+                        <div class="card-body">
+                            <ul>
+                                <li><a href="#1">المصدر الاول</a></li>
+                                <li><a href="#2">المصدر الثاني</a></li>
+                                <li><a href="#3">المصدر الثالث</a></li>
+                                <li><a href="#4">المصدر الرابع</a></li>
+                                <li><a href="#5">المصدر الخامس</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card m-3 b">
+                        <h4 class="card-title border-bottom m-2 p-2 text-center">
+                            مساحة إعلانية
+                        </h4>
+                        <div class="card-body">
+                            هنا مساحة إعلانية فارغة!
+                            <br/>
+                            يمكنك الاتصال بنا لإستغلالها لك في اعلانك الخاص.
+                            <br/>
+                            <div dir="ltr">
+                                <div dir="ltr"><i class="fab fa-facebook">Facebook </i></div>
+                                <div><i class="fab fa-twitter"> Twitter </i></div>
+                                <div><i class="fab fa-linkdin"> Linkdin </i></div>
+                                <div><i class="fab fa-youtube"> Youtube </i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md text-white text-center mb-3">
+                <small>&copy; جميع الحقوق محفوظة لدى <a class="light-link" href="http://github.com/muhmdhsn313"
+                                                        target="_blank">محمد حسن الاسدي</a></small>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="{% static 'blog/js/jquery-3.3.1.slim.min.js' %}"></script>
+<script src="{% static 'blog/js/popper.min.js' %}"></script>
+<script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'blog/js/fontawesome-all.min.js' %}"></script>
+</body>
+</html>

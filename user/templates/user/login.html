@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% load crispy_forms_tags %}
+
+    <div class="card p-1 mb-5">
+        <h3 class="border-bottom m-2 mb-1 mt-5">تسجيل الدخول</h3>
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="alert alert-{{ msg.tags }}">
+                    {{ msg }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <form method="post" class="p-2">
+            {% csrf_token %}
+            {{ form|crispy }} {# this is for second login way #}
+            {#            <div class="m-4"> this is for third login way #}
+            {#                <input type="text" name="username" id="username" class="form-control" placeholder="إسم المستخدم">#}
+            {#            </div>#}
+            {#            <div class="m-4">#}
+            {#                <input type="password" name="password" id="password" class="form-control" placeholder="كلمة المرور">#}
+            {#            </div>#}
+            <button class="btn btn-info btn-block" type="submit">دخول</button>
+        </form>
+        <small class="border-top m-2 mt-4 p-2">إذا لم يكن لديك حساب مسجل فيمكنك <a
+                href="{% url 'register' %}">التسجيل</a>!</small>
+    </div>
+
+{% endblock %}

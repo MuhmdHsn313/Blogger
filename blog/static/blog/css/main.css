@@ -1,0 +1,75 @@
+@font-face {
+    font-family: 'Tajawal';
+    src: url('../fonts/Tajawal-Regular.ttf') format("truetype"),
+    local('Tajawal');
+}
+head, body{
+    direction: rtl;
+    text-align: right;
+}
+body{
+    font-family: 'Tajawal', 'sans-serif';
+}
+
+.dropdown-menu .dropdown-item{
+    text-align: right;
+    direction: rtl;
+}
+
+.light-link{
+    color: #c6c8ca;
+}
+
+/* visited link */
+.light-link:visited {
+  color: thistle;
+}
+
+/* mouse over link */
+.light-link:hover {
+  color: #86cfda;
+  border-bottom: none;
+}
+
+/* selected link */
+.light-link :active {
+  color: gold;
+}
+.latest-post, .latest-command{
+    padding: 0 15px;
+}
+
+.latest-post .latest-post-item, .latest-command .latest-command-item{
+    padding: 10px;
+}
+
+.latest-post li:first-child, latest-command li:first-child{
+    border-top: 0;
+}
+
+.latest-post li:last-child, latest-command li:last-child{
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.command-title {
+    font-size: 20px;
+    margin-inline-end: 5px;
+    color: #1d2124;
+}
+.command-user {
+    font-size: 16px;
+    color: #dc3545;
+}
+.command-date{
+    display: block;
+    margin: 5px 10px;
+    font-size: 14px;
+}
+.command-subtitle-shows{
+    font-size: 15px;
+}
+.command-body {
+    font-size: 18px;
+    color: #dc3545;
+}

@@ -1,0 +1,89 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load post_tag %}
+{% block content %}
+
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="alert alert-{{ msg.tags }}">
+                {{ msg }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card p-2 m-3">
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <img class="img-thumbnail" width="120px" height="120px" alt="صورة الملف الشخصي"
+                     src="{{ user_page.profile.image.url }}"/>
+                <div class="mt-2">
+                    <a class="btn btn-secondary bg-secondary" href="{% url 'edit_profile' user_page.username %}"><i class="fas fa-pen fa-xs"></i> تحرير</a>
+                </div>
+            </div>
+            <div class="col-md-7 flex-column align-self-sm-center">
+                <h3>
+                    {{ user_page.username }}
+                </h3>
+                <p><span style="font-weight: bolder">الاسم:</span>
+                    {% if user_page.first_name|length > 0 %}
+                        {{ user_page.get_full_name }}
+                    {% else %}
+                        {{ none }}
+                    {% endif %}
+                </p>
+                <p>
+                    <span style="font-weight: bolder">البريد الإلكتروني:</span>
+                    {% if user_page.email|length > 0 %}
+                        {{ user_page.email }}
+                    {% else %}
+                        {{ none }}
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-md-2 flex-column align-self-sm-center">
+                <a href="#" class="btn btn-info text-light bg-info"><small>عضو</small></a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md">
+            <h4 class="text-secondary border-bottom p-3 m-3">تدويناتي</h4>
+            {% for post in posts %}
+                <div class="border align-self-sm-center m-3 p-3">
+                    <div class="row align-self-sm-center">
+                        <div class="flex-column mr-1 align-self-sm-center">
+                            <img class="img-thumbnail" width="70px"
+                                 src=" {% static 'blog/images/staticImagePost.jpg' %} " alt="صورة الناشر"/>
+                        </div>
+                        <div class="mr-4 mt-2 flex-column align-self-sm-center">
+                            <div class="row flex-row">
+                                <a class="command-user" href="{% url 'profile' post.author.username %}"
+                                   target="_blank">{{ post.author.username }}</a>
+                            </div>
+                            <div class="row flex-row">
+                                <span>نُشِرةَ في  <span dir="ltr">{{ post.post_date|date:"Y/m/j H:i" }}</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-md-row p-2 mt-1 align-self-sm-center">
+                        <div class="flex-row align-self-sm-center">
+                            <h3><a href="{% url 'post' post.pk %}">{{ post.title }}</a></h3>
+                        </div>
+                        <div class="flex-row">
+                            {% if post.content|length > 150 %}
+                                {{ post.content|slice:'150' }}... <a href="{% url 'post' post.pk %}">تابع القرئة</a>
+                            {% else %}
+                                {{ post.content }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="card bg-light text-center m-3 mt-5 p-4">
+                    <h5 class="mb-0">لا توجد تدوينات!</h5>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% include 'blog/paginations.html' %}
+{% endblock %}

@@ -1,0 +1,9 @@
+<div class="border-top pt-3 m-3 align-self-sm-center text-center">
+    {% if posts.has_previous %}
+        <a class="btn btn-secondary" href="?page={{ posts.previous_page_number }}">السابق</a>
+    {% endif %}
+    <span class="pr-4 pl-4">صفحة {{ posts.number }} من <span>{{ posts.paginator.num_pages }}</span></span>
+    {% if posts.has_next %}
+        <a class="btn btn-secondary" href="?page={{ posts.next_page_number }}">التالي</a>
+    {% endif %}
+</div>

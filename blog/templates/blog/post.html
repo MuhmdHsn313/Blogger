@@ -1,0 +1,64 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+ <div class="border align-self-sm-center m-3 p-3">
+            <div class="row align-self-sm-center">
+                <div class="flex-column mr-1 align-self-sm-center">
+                    <img class="img-thumbnail" width="70px" src=" {{ post.author.profile.image.url }} " alt="صورة الناشر" />
+                </div>
+                <div class="mr-4 mt-2 flex-column align-self-sm-center">
+                    <div class="row flex-row">
+                        <a class="command-user" href="{% url 'profile' post.author.username %}" target="_blank">{{ post.author.username }}</a>
+                    </div>
+                    <div class="row flex-row">
+                        <span>نُشِرةَ في  <span dir="ltr">{{ post.post_date|date:"Y/m/j H:i" }}</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-md-row p-2 mt-1 align-self-sm-center">
+                <div class="flex-row align-self-sm-center">
+                    <h3><a href="{% url 'post' post.pk %}">{{post.title}}</a></h3>
+                </div>
+                <div class="flex-row">
+                    {{post.content}}
+                </div>
+            </div>
+        </div>
+{% if post_commands %}
+    <h3 class="border-bottom m-3 mt-5">
+        التعليقات ({{ post_commands.count }})
+      </h3>
+    {% for command in post_commands %}
+        <div class="card bg-light m-3 p-2 pb-3 pr-3">
+                <div class="card-title border-bottom">
+                    <span class="command-title">{{ command.title }}</span>
+                    <span class="command-subtitle-shows">بواسطة <a class="command-user" href="{% url 'profile' command.user_command.username %}" target="_blank">{{ command.user_command.username }}</a></span><span class="command-date text-secondary">الساعة {{ command.date_command|date:"H:i" }} في {{ command.date_command|date:"Y/m/j" }}</span>
+                </div>
+                <span class="card-subtitle text-break">{{ command.body }}</span>
+            </div>
+    {% endfor %}
+{% else %}
+    <div class="card bg-light text-center m-3 mt-5 p-4">
+        <h5 class="mb-0">لا توجد تعليقات!</h5>
+    </div>
+{% endif %}
+
+{% if user.is_authenticated %}
+    <h3 class="border-bottom m-3 mb-1 mt-5">إضافة تعليق جديد</h3>
+    <div class="border m-3">
+        <form class="text-right border-light m-3 mt-1 p-2" method="post">
+            {% csrf_token %}
+            {{ commands_form|crispy  }}
+            <!-- Send button -->
+            <button class="btn btn-info btn-block" type="submit">تعليق</button>
+        </form>
+    </div>
+{% else %}
+    <div class="card bg-light text-center m-3 mt-5 p-4">
+            <h5 class="mb-0">عليك تسجيل الدخول للتعليق!</h5>
+        </div>
+{% endif %}
+
+{% endblock content %}

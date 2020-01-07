@@ -1,0 +1,17 @@
+<ul class="list-group-flush latest-post">
+    {% for command in latest_commands %}
+        <li class="list-group-item latest-command-item">
+            <a class="text-dark" href="{% url 'post' command.post.pk %}">
+                {% if command.title|length > 50 %}
+                    {{ command.title|slice:'35' }}...
+                {% else %}
+                    {{ command.title }}
+                {% endif %}
+            </a>
+        </li>
+    {% empty %}
+        <li class="list-group-item latest-command-item">
+            <a class="text-dark">لا يوجد تعليقات!</a>
+        </li>
+    {% endfor %}
+</ul>

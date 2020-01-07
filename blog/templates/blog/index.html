@@ -1,0 +1,49 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+    {% if messages %}
+        {% for msg in messages %}
+            {% if msg.tags == 'error' %}
+                <div class="alert alert-danger">
+                    {{ msg }}
+                </div>
+            {% else %}
+                <div class="alert alert-{{ msg.tags }}">
+                    {{ msg }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% for post in posts %}
+        <div class="border align-self-sm-center m-3 p-3">
+            <div class="row align-self-sm-center">
+                <div class="flex-column mr-1 align-self-sm-center">
+                    <img class="img-thumbnail rounded-circle border" width="70px" src=" {{ post.author.profile.image.url }} "
+                         alt="صورة الناشر"/>
+                </div>
+                <div class="mr-4 mt-2 flex-column align-self-sm-center">
+                    <div class="row flex-row">
+                        <a class="command-user" href="{% url 'profile' post.author.username %}"
+                           target="_blank">{{ post.author.username }}</a>
+                    </div>
+                    <div class="row flex-row">
+                        <span>نُشِرةَ في  <span dir="ltr">{{ post.post_date|date:"Y/m/j H:i" }}</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-md-row p-2 mt-1 align-self-sm-center">
+                <div class="flex-row align-self-sm-center">
+                    <h3><a href="{% url 'post' post.pk %}">{{ post.title }}</a></h3>
+                </div>
+                <div class="flex-row">
+                    {% if post.content|length > 150 %}
+                        {{ post.content|slice:'150' }}... <a href="{% url 'post' post.pk %}">تابع القرئة</a>
+                    {% else %}
+                        {{ post.content }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% include 'blog/paginations.html' %}
+{% endblock content %}
